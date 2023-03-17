@@ -1,0 +1,60 @@
+plugins {
+    id 'org.springframework.boot' version '2.6.6'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'jacoco'
+    id "org.sonarqube" version "3.0"
+}
+
+group = 'id.ac.ui.cs.advprog'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.postgresql:postgresql:42.3.3'
+    implementation "org.springdoc:springdoc-openapi-ui:1.5.9"
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+}
+
+jacocoTestReport {
+    reports {
+        csv.enabled true
+        csv.destination file("${buildDir}/jacocoCsv")
+        xml.enabled true
+    }
+}
+
+test {
+    finalizedBy("jacocoTestReport")
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "AdvProg_reguler-2022_student_kelas-a_2006596075-Muhammad-Haqqi-Al-Farizi_a1-dungeon-crawler-game_dungeon-crawler-be_AYBVrB4hmTzPxwcesGdN"
+        property "sonar.host.url", "https://sonarqube.cs.ui.ac.id"
+        property "sonar.login", "5ebf1f04e107b9419f3ee643ac84ccce2bd6f0cf"
+    }
+}
